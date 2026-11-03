@@ -29,7 +29,7 @@
 </head>
 <body class="min-h-screen relative">
 
-    <!-- INTRO STARTUP ANIMATION -->
+    <!-- INTRO STARTUP ANIMATION (AUTO-ADVANCING) -->
     <div id="intro-screen">
         <div class="relative flex flex-col items-center">
             <svg class="w-32 h-32 text-red-500 dragon-pulse mb-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -38,12 +38,10 @@
             </svg>
             <h1 class="font-orbitron text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-cyan-400 glow-red mb-2">SOVEREIGN-95 CORE</h1>
             <p class="font-mono text-xs text-slate-400 mb-6">DEVELOPERS: YAMISH PAL (BTEE24O2091) | TUMCHOBEMO C YANTHAN (BTEE24O1084)</p>
-            <div class="w-64 bg-slate-900 border border-red-500/40 h-3 rounded-full overflow-hidden p-0.5 mb-6">
-                <div id="progress-bar" class="bg-gradient-to-r from-red-600 to-cyan-400 h-full w-0 rounded-full transition-all duration-300"></div>
+            <div class="w-64 bg-slate-900 border border-red-500/40 h-3 rounded-full overflow-hidden p-0.5 mb-2">
+                <div id="progress-bar" class="bg-gradient-to-r from-red-600 to-cyan-400 h-full w-0 rounded-full transition-all duration-100"></div>
             </div>
-            <button id="launch-btn" onclick="bootSystem()" class="hidden px-8 py-3 bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-500 hover:to-cyan-400 font-orbitron text-xs font-bold tracking-widest text-white rounded-xl shadow-lg shadow-red-500/30 transition-all transform hover:scale-105">
-                AWAKEN QUANTUM SYSTEM
-            </button>
+            <p id="boot-status" class="font-mono text-[10px] text-cyan-400 tracking-wider">INITIALIZING QUANTUM GRID...</p>
         </div>
     </div>
 
@@ -249,27 +247,33 @@
         const GEMINI_API_KEY = "AQ.Ab8RN6JDRIi55km-HAs4MJzjthWsmLTtN3RW-plt59tXsjMW2g";
         let customAppliancesList = [];
 
-        // --- 1. STARTUP & SHUTDOWN ANIMATION CONTROLLER ---
+        // --- 1. AUTO-BOOT ANIMATION CONTROLLER ---
         window.addEventListener('DOMContentLoaded', () => {
-            let p = 0;
+            let progress = 0;
             const bar = document.getElementById('progress-bar');
-            const btn = document.getElementById('launch-btn');
-            const timer = setInterval(() => {
-                p += 5;
-                bar.style.width = p + '%';
-                if (p >= 100) {
-                    clearInterval(timer);
-                    btn.classList.remove('hidden');
-                }
-            }, 50);
-        });
-
-        function bootSystem() {
+            const status = document.getElementById('boot-status');
             const intro = document.getElementById('intro-screen');
-            intro.style.opacity = '0';
-            setTimeout(() => { intro.style.display = 'none'; }, 800);
-            speakText("Sovereign 95 Quantum AI Avatar online. Good day teachers and visitors, welcome!");
-        }
+
+            const timer = setInterval(() => {
+                progress += 4;
+                if (bar) bar.style.width = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(timer);
+                    if (status) status.innerText = "QUANTUM CORE ONLINE";
+                    setTimeout(() => {
+                        intro.style.opacity = '0';
+                        setTimeout(() => {
+                            intro.style.display = 'none';
+                            init3DHumanAvatar();
+                            init3DHologramHouse();
+                            recalculateMatrix();
+                            speakText("Sovereign 95 Quantum AI online. Welcome Yamish Pal and Tumchobemo.");
+                        }, 600);
+                    }, 400);
+                }
+            }, 60);
+        });
 
         function triggerShutdown() {
             const shutdown = document.getElementById('shutdown-screen');
@@ -283,7 +287,7 @@
         function speakText(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const cleanText = text.replace(/[*#_]/g, ''); // Remove Markdown stars for clean TTS
+                const cleanText = text.replace(/[*#_]/g, '');
                 const msg = new SpeechSynthesisUtterance(cleanText);
                 msg.rate = 1.0;
                 msg.pitch = 0.95;
@@ -297,7 +301,7 @@
         function speakAnalysis() {
             const kwh = document.getElementById('kwh-slider').value;
             const bill = document.getElementById('total-bill-display').innerText;
-            speakText(`Current calculated total consumption is ${kwh} kilowatt hours, with an estimated total bill of ${bill}.`);
+            speakText(`Current calculated total consumption is ${kwh} kilowatt hours, with an estimated total bill of${bill}.`);
         }
 
         function askPromptChip(text) {
@@ -336,231 +340,8 @@
 
         async function queryGeminiAI(query) {
             const chatLog = document.getElementById('chat-log');
-            chatLog.innerHTML += `<div class="text-cyan-400">[You]: ${query}</div>`;
-            chatLog.scrollTop = chatLog.scrollHeight;
-
-            let answer = "";
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+            chatLog.innerHTML += `<div class="text-cyan-400">[You]: ${query}</div>`; chatLog.scrollTop = chatLog.scrollHeight;  let answer = ""; try { const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `You are the Sovereign-95 AI Avatar created by engineering students Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084). You talk politely, naturally, and conversationally. Answer greetings, viva questions, project introductions, and tariff questions concisely without using markdown asterisks. User Question: ${query}` }] }]
-                    })
-                });
-                const data = await response.json();
-                answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            } catch (err) {
-                // API network block fallback
-            }
-
-            // SMART CONVERSATIONAL ENGINE FOR ALL COMMON TEACHER / VIVA / GREETING QUESTIONS
-            if (!answer) {
-                const q = query.toLowerCase();
-                const totalBill = document.getElementById('total-bill-display').innerText;
-                const totalKwh = document.getElementById('kwh-slider').value;
-
-                if (q.includes('audible') || q.includes('hear me') || q.includes('testing')) {
-                    answer = "Yes! You are perfectly audible. How can I assist you with the energy project today?";
-                } else if (q.includes('morning') || q.includes('afternoon') || q.includes('evening') || q.includes('hello') || q.includes('hi') || q.includes('hey')) {
-                    answer = "Good day! Welcome to the Sovereign-95 Energy Suite created by Yamish Pal and Tumchobemo. How are you doing today?";
-                } else if (q.includes('who are you') || q.includes('introduce') || q.includes('name') || q.includes('creators')) {
-                    answer = "I am the Sovereign-95 AI Assistant. I was built by lead architects Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084) to analyze electricity bills and telemetry in real time.";
-                } else if (q.includes('project') || q.includes('about') || q.includes('working') || q.includes('purpose')) {
-                    answer = "This project calculates multi-slab electricity tariffs dynamically, allows adding direct appliance loads in kWh, and renders interactive 3D WebGL house models.";
-                } else if (q.includes('slab') || q.includes('rate') || q.includes('tariff') || q.includes('formula')) {
-                    answer = `Our system breaks consumption into progressive slabs. Slab 1 charges $${document.getElementById('rate1').value} per kWh, Slab 2 charges $${document.getElementById('rate2').value} per kWh, and Slab 3 handles higher loads.`;
-                } else if (q.includes('teacher') || q.includes('viva') || q.includes('marks') || q.includes('evaluat')) {
-                    answer = "Welcome Professor! We are excited to present our project. You can ask me about our electrical formulas, 3D wireframes, or custom load calculations.";
-                } else {
-                    answer = `I am listening! Currently, your total energy load is set at ${totalKwh} kWh, totaling an estimated bill of ${totalBill}. What else would you like to explore?`;
-                }
-            }
-
-            chatLog.innerHTML += `<div class="text-purple-300">[AI Avatar]: ${answer}</div>`;
-            chatLog.scrollTop = chatLog.scrollHeight;
-            speakText(answer);
-            document.getElementById('avatar-status').innerText = "READY";
-        }
-
-        // --- 3. EDITABLE TARIFF CALCULATOR MATRIX ---
-        function recalculateMatrix() {
-            const kwh = parseFloat(document.getElementById('kwh-slider').value);
-            document.getElementById('kwh-display').innerText = `${kwh} kWh`;
-
-            const limit1 = parseFloat(document.getElementById('limit1').value) || 150;
-            const limit2 = parseFloat(document.getElementById('limit2').value) || 300;
-            const rate1 = parseFloat(document.getElementById('rate1').value) || 3.5;
-            const rate2 = parseFloat(document.getElementById('rate2').value) || 6.0;
-            const rate3 = parseFloat(document.getElementById('rate3').value) || 8.5;
-
-            let s1 = Math.min(kwh, limit1) * rate1;
-            let s2 = (kwh > limit1 ? Math.min(kwh - limit1, limit2 - limit1) : 0) * rate2;
-            let s3 = (kwh > limit2 ? (kwh - limit2) : 0) * rate3;
-
-            document.getElementById('slab1-cost').innerText = `$${s1.toFixed(2)}`;
-            document.getElementById('slab2-cost').innerText = `$${s2.toFixed(2)}`;
-            document.getElementById('slab3-cost').innerText = `$${s3.toFixed(2)}`;
-
-            const total = s1 + s2 + s3;
-            document.getElementById('total-bill-display').innerText = `$${total.toFixed(2)}`;
-        }
-
-        // --- 4. DIRECT kWh APPLIANCE MANAGER & 3D HOUSE SPAWNER ---
-        function addCustomAppliance() {
-            const name = document.getElementById('app-name').value.trim();
-            const kwh = parseFloat(document.getElementById('app-kwh').value);
-
-            if (!name || isNaN(kwh)) {
-                alert("Please enter a valid appliance name and monthly kWh.");
-                return;
-            }
-
-            customAppliancesList.push({ name, kwh });
-
-            const slider = document.getElementById('kwh-slider');
-            slider.value = Math.min(parseFloat(slider.max), parseFloat(slider.value) + kwh);
-            recalculateMatrix();
-
-            spawnHologramObject(name);
-
-            document.getElementById('app-name').value = '';
-            document.getElementById('app-kwh').value = '';
-            renderApplianceTable();
-            speakText(`Added ${name} consuming ${kwh} kilowatt hours.`);
-        }
-
-        function renderApplianceTable() {
-            const tbody = document.getElementById('appliance-table-body');
-            tbody.innerHTML = '';
-            customAppliancesList.forEach((app, idx) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="p-2 text-white font-bold">${app.name}</td>
-                        <td class="p-2 text-cyan-400">${app.kwh} kWh</td>
-                        <td class="p-2"><button onclick="removeAppliance(${idx})" class="text-red-400 hover:text-red-300">Remove</button></td>
-                    </tr>
-                `;
-            });
-        }
-
-        function removeAppliance(idx) {
-            const app = customAppliancesList[idx];
-            const slider = document.getElementById('kwh-slider');
-            slider.value = Math.max(0, parseFloat(slider.value) - app.kwh);
-            recalculateMatrix();
-            customAppliancesList.splice(idx, 1);
-            renderApplianceTable();
-            speakText(`Removed appliance.`);
-        }
-
-        // --- 5. THREE.JS 3D HUMAN MALE AVATAR ---
-        let avatarScene, avatarCamera, avatarRenderer, headGroup, jawMesh;
-        let isHumanSpeaking = false;
-
-        function init3DHumanAvatar() {
-            const container = document.getElementById('avatar-container');
-            const width = container.clientWidth || 300;
-            const height = container.clientHeight || 180;
-
-            avatarScene = new THREE.Scene();
-            avatarCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            avatarCamera.position.set(0, 0, 3.5);
-
-            avatarRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            avatarRenderer.setSize(width, height);
-            avatarRenderer.setPixelRatio(window.devicePixelRatio);
-            container.appendChild(avatarRenderer.domElement);
-
-            avatarScene.add(new THREE.DirectionalLight(0x00f3ff, 2.0)).position.set(2, 3, 5);
-            avatarScene.add(new THREE.AmbientLight(0x8b5cf6, 1.2));
-
-            headGroup = new THREE.Group();
-
-            const craniumGeo = new THREE.SphereGeometry(0.8, 32, 32);
-            craniumGeo.scale(1, 1.2, 1);
-            const craniumMat = new THREE.MeshStandardMaterial({ color: 0x121026, roughness: 0.3, metalness: 0.8 });
-            const headMesh = new THREE.Mesh(craniumGeo, craniumMat);
-            headGroup.add(headMesh);
-
-            const eyeMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff });
-            const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), eyeMat); leftEye.position.set(-0.28, 0.2, 0.72);
-            const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), eyeMat); rightEye.position.set(0.28, 0.2, 0.72);
-            headGroup.add(leftEye); headGroup.add(rightEye);
-
-            const jawGeo = new THREE.BoxGeometry(0.7, 0.3, 0.6);
-            const jawMat = new THREE.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.9 });
-            jawMesh = new THREE.Mesh(jawGeo, jawMat);
-            jawMesh.position.set(0, -0.6, 0.2);
-            headGroup.add(jawMesh);
-
-            avatarScene.add(headGroup);
-
-            function animateAvatar() {
-                requestAnimationFrame(animateAvatar);
-                headGroup.rotation.y += 0.005;
-                if (isHumanSpeaking) {
-                    jawMesh.position.y = -0.6 - Math.sin(Date.now() * 0.025) * 0.08;
-                } else {
-                    jawMesh.position.y = -0.6;
-                }
-                avatarRenderer.render(avatarScene, avatarCamera);
-            }
-            animateAvatar();
-        }
-
-        function animateHumanSpeaking(state) { isHumanSpeaking = state; }
-
-        // --- 6. THREE.JS 3D HOLOGRAM HOUSE ---
-        let houseScene, houseCamera, houseRenderer, houseGroup;
-        const houseObjects = [];
-
-        function init3DHologramHouse() {
-            const container = document.getElementById('house-container');
-            const width = container.clientWidth || 300;
-            const height = container.clientHeight || 180;
-
-            houseScene = new THREE.Scene();
-            houseCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            houseCamera.position.set(4, 3, 5); houseCamera.lookAt(0, 0, 0);
-
-            houseRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            houseRenderer.setSize(width, height);
-            container.appendChild(houseRenderer.domElement);
-
-            houseGroup = new THREE.Group();
-            houseGroup.add(new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.8, 2.5), new THREE.MeshBasicMaterial({ color: 0x00f3ff, wireframe: true })));
-            
-            const roof = new THREE.Mesh(new THREE.ConeGeometry(2.1, 1.0, 4), new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true }));
-            roof.rotateY(Math.PI / 4); roof.position.y = 1.4;
-            houseGroup.add(roof);
-
-            houseScene.add(houseGroup);
-
-            function animateHouse() {
-                requestAnimationFrame(animateHouse);
-                houseGroup.rotation.y += 0.004;
-                houseRenderer.render(houseScene, houseCamera);
-            }
-            animateHouse();
-        }
-
-        function spawnHologramObject(name) {
-            const mesh = new THREE.Mesh(
-                new THREE.BoxGeometry(0.35, 0.35, 0.35),
-                new THREE.MeshBasicMaterial({ color: 0xff0033 })
-            );
-            const angle = houseObjects.length * (Math.PI / 3);
-            mesh.position.set(Math.cos(angle) * 0.8, -0.3, Math.sin(angle) * 0.8);
-            houseGroup.add(mesh);
-            houseObjects.push(mesh);
-        }
-
-        window.onload = () => {
-            init3DHumanAvatar();
-            init3DHologramHouse();
-            recalculateMatrix();
-        };
-    </script>
-</body>
-</html>
+                        contents: [{ parts: [{ text: `You are the Sovereign-95 AI Avatar created by engineering students Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084). You talk politely, naturally,
