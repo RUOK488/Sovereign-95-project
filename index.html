@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN-95: Quantum Energy Suite & AI Avatar Workspace</title>
+    <title>SOVEREIGN-95: Google Knowledge Engine & 3D Cyber Robot Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@600;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -12,16 +12,21 @@
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         .glow-cyan { text-shadow: 0 0 15px rgba(0, 243, 255, 0.8); }
-        .glass-card { background: rgba(12, 10, 24, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .glass-card { background: rgba(12, 10, 24, 0.88); backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.35); }
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+        header, main { position: relative; z-index: 10; }
     </style>
 </head>
 <body class="min-h-screen relative flex flex-col">
 
+    <!-- LIVE ANIMATED BACKGROUND GRAPHICS -->
+    <canvas id="bg-canvas"></canvas>
+
     <!-- TOP HEADER -->
-    <header class="bg-slate-950/90 border-b border-cyan-500/40 px-6 py-3 flex flex-wrap justify-between items-center z-50 shadow-lg shadow-cyan-500/15">
+    <header class="bg-slate-950/90 border-b border-cyan-500/40 px-6 py-3 flex flex-wrap justify-between items-center shadow-lg shadow-cyan-500/15">
         <div class="flex items-center space-x-3">
             <span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
-            <span class="font-orbitron text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-cyan-400 to-purple-500">SOVEREIGN-95 AI SUITE</span>
+            <span class="font-orbitron text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-cyan-400 to-purple-500">SOVEREIGN-95 KNOWLEDGE ENGINE</span>
         </div>
         <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
             <div class="bg-purple-950/60 border border-purple-500/50 px-3 py-1 rounded-lg">
@@ -46,7 +51,7 @@
                         <h2 class="font-orbitron text-lg font-bold text-white tracking-wider">Editable Tariff Slabs & Rates</h2>
                         <p class="text-xs text-slate-400 font-mono">Fully editable limits and charges per kWh</p>
                     </div>
-                    <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-400/40 text-cyan-400 rounded-lg text-xs font-mono font-bold">LIVE EDIT</span>
+                    <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-400/40 text-cyan-400 rounded-lg text-xs font-mono font-bold">LIVE INDEXED</span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
@@ -152,30 +157,31 @@
 
             <div class="glass-card rounded-2xl p-4 border border-purple-500/30 text-center relative flex flex-col items-center">
                 <div class="flex justify-between w-full items-center mb-2 px-2">
-                    <span class="text-[10px] font-orbitron uppercase tracking-widest text-purple-400 font-bold">3D ROBOT AI AVATAR</span>
-                    <span id="avatar-status" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 px-2 py-0.5 rounded">READY</span>
+                    <span class="text-[10px] font-orbitron uppercase tracking-widest text-purple-400 font-bold">3D CYBER ROBOT AVATAR</span>
+                    <span id="avatar-status" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 px-2 py-0.5 rounded">BOOTING</span>
                 </div>
-                <div id="avatar-container" class="w-full h-48 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative"></div>
+                <!-- 3D Robot Container -->
+                <div id="avatar-container" class="w-full h-56 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative flex items-center justify-center"></div>
                 
                 <div class="w-full flex gap-2 mb-2">
                     <button onclick="startVoiceListener()" id="mic-btn" class="flex-1 py-2 bg-gradient-to-r from-purple-600 to-cyan-500 text-white rounded-xl font-orbitron text-xs font-bold tracking-wider hover:opacity-90 transition shadow-lg shadow-purple-500/30 cursor-pointer">
-                        🎤 SPEAK TO AI AVATAR
+                        🎤 SPEAK TO ROBOT AI
                     </button>
                 </div>
 
                 <div class="flex flex-wrap gap-1.5 mb-2 w-full text-[10px] font-mono">
-                    <button onclick="askPromptChip('Hello! Please introduce yourself and your creators.')" class="bg-slate-900 border border-slate-700 hover:border-cyan-400 px-2 py-1 rounded text-cyan-300 cursor-pointer">👋 Introduce Yourself</button>
-                    <button onclick="askPromptChip('Explain the main objectives of this Sovereign-95 energy project.')" class="bg-slate-900 border border-slate-700 hover:border-purple-400 px-2 py-1 rounded text-purple-300 cursor-pointer">🎓 Project Overview</button>
-                    <button onclick="askPromptChip('How does the multi-slab tariff calculation work in this system?')" class="bg-slate-900 border border-slate-700 hover:border-red-400 px-2 py-1 rounded text-red-300 cursor-pointer">⚡ Explain Tariff Slabs</button>
+                    <button onclick="askPromptChip('Hello! How are you doing today?')" class="bg-slate-900 border border-slate-700 hover:border-cyan-400 px-2 py-1 rounded text-cyan-300 cursor-pointer">👋 Casual Chat</button>
+                    <button onclick="askPromptChip('What is Sovereign-95 and who developed it?')" class="bg-slate-900 border border-slate-700 hover:border-purple-400 px-2 py-1 rounded text-purple-300 cursor-pointer">🔍 Project Overview</button>
+                    <button onclick="askPromptChip('Are tariff slabs editable in real time?')" class="bg-slate-900 border border-slate-700 hover:border-red-400 px-2 py-1 rounded text-red-300 cursor-pointer">⚡ Editable Slabs?</button>
                 </div>
 
                 <div id="chat-log" class="w-full h-28 overflow-y-auto bg-slate-950 p-3 rounded-xl border border-slate-800 text-left text-xs font-mono space-y-2 mb-2">
-                    <div class="text-purple-400">[AI Avatar]: Hello! I am Sovereign-95 AI, developed by Yamish Pal[cite: 1] and Tumchobemo C Yanthan[cite: 1]. Ask me anything!</div>
+                    <div class="text-purple-400">[Robot AI]: System boot sequence initiated. Ready for normal conversation or project inquiries!</div>
                 </div>
 
                 <div class="w-full flex gap-2">
-                    <input type="text" id="user-query" placeholder="Ask anything (e.g. Good morning)..." onkeypress="if(event.key === 'Enter') sendTextQuery()" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white outline-none focus:border-purple-500">
-                    <button onclick="sendTextQuery()" class="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-orbitron text-xs font-bold transition cursor-pointer">ASK</button>
+                    <input type="text" id="user-query" placeholder="Ask anything or chat normally..." onkeypress="if(event.key === 'Enter') sendTextQuery()" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white outline-none focus:border-purple-500">
+                    <button onclick="sendTextQuery()" class="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-orbitron text-xs font-bold transition cursor-pointer">SEND</button>
                 </div>
             </div>
 
@@ -185,7 +191,7 @@
                     <span class="text-[10px] font-orbitron uppercase tracking-widest text-cyan-400 font-bold">3D HOLOGRAM HOUSE MATRIX</span>
                     <span class="text-[10px] font-mono text-slate-400">Interactive Wireframe Grid</span>
                 </div>
-                <div id="house-container" class="w-full h-48 rounded-xl overflow-hidden bg-slate-950/90 border border-cyan-500/20 relative"></div>
+                <div id="house-container" class="w-full h-48 rounded-xl overflow-hidden bg-slate-950/90 border border-cyan-500/20 relative flex items-center justify-center"></div>
             </div>
 
         </section>
@@ -196,11 +202,101 @@
         const GEMINI_API_KEY = "AQ.Ab8RN6JDRIi55km-HAs4MJzjthWsmLTtN3RW-plt59tXsjMW2g";
         let customAppliancesList = [];
 
+        // --- LIVE ANIMATED GRAPHICS BACKGROUND ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for (let i = 0; i < 70; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.8,
+                vy: (Math.random() - 0.5) * 0.8,
+                radius: Math.random() * 2 + 1
+            });
+        }
+
+        function drawBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 243, 255, 0.15)';
+            ctx.strokeStyle = 'rgba(139, 92, 246, 0.1)';
+            ctx.lineWidth = 1;
+
+            particles.forEach((p, index) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                for (let j = index + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(drawBackground);
+        }
+        drawBackground();
+
+        // --- INITIALIZATION & BOOT SEQUENCE ---
         window.addEventListener('DOMContentLoaded', () => {
             init3DRobotAvatar();
             init3DHologramHouse();
             recalculateMatrix();
+            runBootSequence();
         });
+
+        function runBootSequence() {
+            const status = document.getElementById('avatar-status');
+            let scaleStep = 0.1;
+            const bootInterval = setInterval(() => {
+                scaleStep += 0.15;
+                if(robotGroup) robotGroup.scale.set(scaleStep, scaleStep, scaleStep);
+                if (scaleStep >= 1.0) {
+                    if(robotGroup) robotGroup.scale.set(1, 1, 1);
+                    if(status) status.innerText = "READY";
+                    clearInterval(bootInterval);
+                }
+            }, 50);
+        }
+
+        function runShutdownSequence(callback) {
+            const status = document.getElementById('avatar-status');
+            if(status) status.innerText = "SHUTDOWN";
+            let scaleStep = 1.0;
+            const shutInterval = setInterval(() => {
+                scaleStep -= 0.15;
+                if(robotGroup) robotGroup.scale.set(scaleStep, scaleStep, scaleStep);
+                if (scaleStep <= 0.1) {
+                    if(robotGroup) robotGroup.scale.set(0.1, 0.1, 0.1);
+                    clearInterval(shutInterval);
+                    if(callback) callback();
+                }
+            }, 40);
+        }
+
+        function rebootAvatar() {
+            runShutdownSequence(() => {
+                runBootSequence();
+            });
+        }
 
         function speakText(text) {
             if ('speechSynthesis' in window) {
@@ -208,10 +304,13 @@
                 const cleanText = text.replace(/[*#_]/g, '');
                 const msg = new SpeechSynthesisUtterance(cleanText);
                 msg.rate = 1.0;
-                msg.pitch = 0.95;
+                msg.pitch = 0.85;
                 const status = document.getElementById('avatar-status');
                 msg.onstart = () => { if(status) status.innerText = "SPEAKING"; animateRobotSpeaking(true); };
-                msg.onend = () => { if(status) status.innerText = "READY"; animateRobotSpeaking(false); };
+                msg.onend = () => { 
+                    if(status) status.innerText = "READY"; 
+                    animateRobotSpeaking(false); 
+                };
                 window.speechSynthesis.speak(msg);
             }
         }
@@ -219,7 +318,7 @@
         function speakAnalysis() {
             const kwh = document.getElementById('kwh-slider').value;
             const bill = document.getElementById('total-bill-display').innerText;
-            speakText(`Current calculated total consumption is ${kwh} kilowatt hours, with an estimated total bill of ${bill}.`);
+            speakText(`Current indexed consumption is ${kwh} kilowatt hours, totaling an estimated bill of ${bill}.`);
         }
 
         function askPromptChip(text) {
@@ -233,7 +332,7 @@
             const query = input.value.trim();
             if (!query) return;
             input.value = "";
-            await queryGeminiAI(query);
+            await queryAI(query);
         }
 
         function startVoiceListener() {
@@ -249,13 +348,13 @@
             recognition.onresult = async (event) => {
                 const query = event.results[0][0].transcript;
                 if(status) status.innerText = "PROCESSING";
-                await queryGeminiAI(query);
+                await queryAI(query);
             };
             recognition.onerror = () => { if(status) status.innerText = "READY"; };
             recognition.start();
         }
 
-        async function queryGeminiAI(query) {
+        async function queryAI(query) {
             const chatLog = document.getElementById('chat-log');
             if (chatLog) {
                 chatLog.innerHTML += `<div class="text-cyan-400">[You]: ${query}</div>`;
@@ -268,38 +367,49 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `You are the Sovereign-95 AI Avatar created by engineering students Yamish Pal (Roll BTEE24O2091)[cite: 1] and Tumchobemo C Yanthan (Roll BTEE24O1084)[cite: 1]. Answer naturally and conversationally without markdown. User Question: ${query}` }] }]
+                        contents: [{ parts: [{ text: `You are the Sovereign-95 AI Assistant. You can engage in friendly, casual normal conversations as well as answer technical questions about the Sovereign-95 energy project developed by Yamish Pal (Roll BTEE24O2091)[cite: 1] and Tumchobemo C Yanthan (Roll BTEE24O1084)[cite: 1]. Answer naturally, politely, and conversationally. User Prompt: ${query}` }] }]
                     })
                 });
                 const data = await response.json();
                 answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
             } catch (err) {}
 
+            // DUAL-MODE KNOWLEDGE & NORMAL CHAT FALLBACK
             if (!answer) {
                 const q = query.toLowerCase();
                 const totalBill = document.getElementById('total-bill-display')?.innerText || "$2700.00";
                 const totalKwh = document.getElementById('kwh-slider')?.value || "450";
 
-                if (q.includes('audible') || q.includes('hear me')) {
-                    answer = "Yes! You are perfectly audible. How can I assist you with the energy project today?";
-                } else if (q.includes('morning') || q.includes('hello') || q.includes('hi')) {
-                    answer = "Good day! Welcome to the Sovereign-95 Energy Suite created by Yamish Pal[cite: 1] and Tumchobemo[cite: 1].";
-                } else if (q.includes('who are you') || q.includes('introduce') || q.includes('creators')) {
-                    answer = "I am the Sovereign-95 AI Assistant, built by Yamish Pal (Roll BTEE24O2091)[cite: 1] and Tumchobemo C Yanthan (Roll BTEE24O1084)[cite: 1].";
-                } else if (q.includes('slab') || q.includes('rate') || q.includes('tariff')) {
-                    answer = `Our system breaks consumption into progressive slabs. Slab 1 charges $${document.getElementById('rate1')?.value || 3.5} per kWh, and Slab 2 charges $${document.getElementById('rate2')?.value || 6.0} per kWh.`;
+                if (q.includes('shutdown') || q.includes('turn off') || q.includes('sleep')) {
+                    answer = "Initiating shutdown sequence. Goodbye!";
+                    runShutdownSequence();
+                } else if (q.includes('reboot') || q.includes('restart') || q.includes('wake up')) {
+                    answer = "Rebooting system telemetry and restoring power cores.";
+                    rebootAvatar();
+                } else if (q.includes('how are you') || q.includes('doing') || q.includes('sup') || q.includes('whats up')) {
+                    answer = "I'm doing fantastic, thank you for asking! Ready to help you analyze energy tariffs or chat about anything you like.";
+                } else if (q.includes('joke') || q.includes('funny')) {
+                    answer = "Why don't scientists trust atoms? Because they make up everything—just like our energy slabs!";
+                } else if (q.includes('name') || q.includes('who are you')) {
+                    answer = "I am your Sovereign-95 Cyber Robot AI Assistant, created by Yamish Pal (Roll BTEE24O2091)[cite: 1] and Tumchobemo C Yanthan (Roll BTEE24O1084)[cite: 1].";
+                } else if (q.includes('editable') || q.includes('slabs') || q.includes('modify')) {
+                    answer = "Yes! All tariff slabs, upper kWh limits, and rates per kWh are fully editable in real time using the matrix on the left.";
+                } else if (q.includes('calculation') || q.includes('formula') || q.includes('work')) {
+                    answer = "Multi-slab progressive calculation splits total monthly kWh sequentially across tier limits (Slab 1, Slab 2, and Slab 3), multiplying each tier by its respective unit rate.";
+                } else if (q.includes('appliance') || q.includes('device')) {
+                    answer = "You can add custom appliances by entering their name and direct monthly kilowatt-hours into the Custom Appliance Manager.";
+                } else if (q.includes('morning') || q.includes('hello') || q.includes('hi') || q.includes('hey')) {
+                    answer = "Hello there! Welcome to the Sovereign-95 Quantum Suite. How can I assist you today?";
                 } else {
-                    answer = `Your total energy load is set at ${totalKwh} kWh, totaling an estimated bill of ${totalBill}. What else would you like to explore?`;
+                    answer = `I hear you! Your current system load is ${totalKwh} kWh with an estimated bill of ${totalBill}. What would you like to discuss next?`;
                 }
             }
 
             if (chatLog) {
-                chatLog.innerHTML += `<div class="text-purple-300">[AI Avatar]: ${answer}</div>`;
+                chatLog.innerHTML += `<div class="text-purple-300">[Robot AI]: ${answer}</div>`;
                 chatLog.scrollTop = chatLog.scrollHeight;
             }
             speakText(answer);
-            const status = document.getElementById('avatar-status');
-            if(status) status.innerText = "READY";
         }
 
         function recalculateMatrix() {
@@ -339,7 +449,7 @@
             if(slider) slider.value = Math.min(parseFloat(slider.max), parseFloat(slider.value) + kwh);
             recalculateMatrix();
             renderApplianceTable();
-            speakText(`Added ${name} consuming ${kwh} kilowatt hours.`);
+            speakText(`Added appliance ${name} with ${kwh} kilowatt hours.`);
         }
 
         function renderApplianceTable() {
@@ -367,43 +477,62 @@
             speakText(`Removed appliance.`);
         }
 
+        // --- THREE.JS 3D CYBER ROBOT AVATAR ---
         let robotScene, robotCamera, robotRenderer, robotGroup, robotJaw, isRobotSpeaking = false;
         function init3DRobotAvatar() {
             const container = document.getElementById('avatar-container');
             if (!container) return;
             container.innerHTML = '';
-            const width = container.clientWidth || 300, height = container.clientHeight || 180;
+            const width = container.clientWidth || 300, height = container.clientHeight || 220;
 
             robotScene = new THREE.Scene();
             robotCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            robotCamera.position.set(0, 0, 3.5);
+            robotCamera.position.set(0, 0, 3.8);
 
             robotRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             robotRenderer.setSize(width, height);
             container.appendChild(robotRenderer.domElement);
 
-            robotScene.add(new THREE.DirectionalLight(0x00f3ff, 2.0)).position.set(2, 3, 5);
-            robotScene.add(new THREE.AmbientLight(0x8b5cf6, 1.2));
+            robotScene.add(new THREE.DirectionalLight(0x00f3ff, 3.0)).position.set(2, 3, 5);
+            robotScene.add(new THREE.DirectionalLight(0xff0055, 2.0)).position.set(-2, -3, 2);
+            robotScene.add(new THREE.AmbientLight(0xffffff, 1.8));
 
             robotGroup = new THREE.Group();
-            const headMesh = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.0, 1.0), new THREE.MeshStandardMaterial({ color: 0x121026, roughness: 0.3, metalness: 0.9 }));
+
+            const headMesh = new THREE.Mesh(
+                new THREE.BoxGeometry(1.2, 1.0, 1.0),
+                new THREE.MeshStandardMaterial({ color: 0x2e1065, metalness: 0.8, roughness: 0.2 })
+            );
             robotGroup.add(headMesh);
 
             const eyeMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff });
-            const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), eyeMat); leftEye.position.set(-0.3, 0.2, 0.52);
-            const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), eyeMat); rightEye.position.set(0.3, 0.2, 0.52);
+            const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), eyeMat); leftEye.position.set(-0.32, 0.2, 0.55);
+            const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), eyeMat); rightEye.position.set(0.32, 0.2, 0.55);
             robotGroup.add(leftEye); robotGroup.add(rightEye);
 
-            robotJaw = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.25, 0.8), new THREE.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.9 }));
-            robotJaw.position.set(0, -0.45, 0.1);
+            const antennaRod = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.5), new THREE.MeshStandardMaterial({ color: 0x00f3ff }));
+            antennaRod.position.set(0, 0.75, 0);
+            const antennaTip = new THREE.Mesh(new THREE.SphereGeometry(0.09), new THREE.MeshBasicMaterial({ color: 0xff0033 }));
+            antennaTip.position.set(0, 1.0, 0);
+            robotGroup.add(antennaRod); robotGroup.add(antennaTip);
+
+            robotJaw = new THREE.Mesh(
+                new THREE.BoxGeometry(0.85, 0.3, 0.85),
+                new THREE.MeshStandardMaterial({ color: 0x7c3aed, metalness: 0.7, roughness: 0.3 })
+            );
+            robotJaw.position.set(0, -0.45, 0.05);
             robotGroup.add(robotJaw);
+
             robotScene.add(robotGroup);
 
             function animateRobot() {
                 requestAnimationFrame(animateRobot);
-                robotGroup.rotation.y += 0.005;
-                if (isRobotSpeaking) { robotJaw.position.y = -0.45 - Math.sin(Date.now() * 0.03) * 0.08; }
-                else { robotJaw.position.y = -0.45; }
+                robotGroup.rotation.y += 0.006;
+                if (isRobotSpeaking) {
+                    robotJaw.position.y = -0.45 - Math.sin(Date.now() * 0.035) * 0.09;
+                } else {
+                    robotJaw.position.y = -0.45;
+                }
                 robotRenderer.render(robotScene, robotCamera);
             }
             animateRobot();
