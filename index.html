@@ -340,18 +340,23 @@
                 const totalBill = document.getElementById('total-bill-display')?.innerText || "$2700.00";
                 const totalKwh = document.getElementById('kwh-slider')?.value || "450";
 
-                if (q.includes('editable') || q.includes('slabs editable') || q.includes('change slabs')) {
+                // FULLY TRAINED Q&A KNOWLEDGE BASE
+                if (q.includes('editable') || q.includes('slabs editable') || q.includes('change slabs') || q.includes('modify')) {
                     answer = "Yes! All tariff slabs, upper kWh limits, and rates per kWh are fully editable in real time using the input boxes on the left panel.";
+                } else if (q.includes('calculation') || q.includes('how does') || q.includes('formula') || q.includes('work')) {
+                    answer = "Our multi-slab tariff splits total monthly kilowatt hours sequentially across tiers. Slab 1 covers initial usage at a base rate, Slab 2 covers intermediate usage, and Slab 3 handles remaining load above the second threshold.";
+                } else if (q.includes('appliance') || q.includes('add device') || q.includes('custom')) {
+                    answer = "You can add custom appliances by entering their name and direct monthly kilowatt hours into the Custom Appliance Manager. This automatically updates your total load and renders a glowing hologram node.";
                 } else if (q.includes('audible') || q.includes('hear me')) {
                     answer = "Yes! I am online and perfectly audible. How can I assist you with our energy project today?";
-                } else if (q.includes('morning') || q.includes('hello') || q.includes('hi')) {
+                } else if (q.includes('morning') || q.includes('hello') || q.includes('hi') || q.includes('hey')) {
                     answer = "Greetings! Welcome to the Sovereign-95 Energy Suite created by Yamish Pal and Tumchobemo.";
-                } else if (q.includes('who are you') || q.includes('introduce') || q.includes('creators')) {
+                } else if (q.includes('who are you') || q.includes('introduce') || q.includes('creators') || q.includes('roll')) {
                     answer = "I am your Sovereign-95 Cyber Robot Assistant, built by Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084).";
-                } else if (q.includes('slab') || q.includes('rate') || q.includes('tariff')) {
-                    answer = `Our system breaks consumption into progressive slabs. Slab 1 charges $${document.getElementById('rate1')?.value || 3.5} per kWh up to ${document.getElementById('limit1')?.value || 150} kWh, and Slab 2 charges $${document.getElementById('rate2')?.value || 6.0} per kWh.`;
+                } else if (q.includes('slab') || q.includes('rate') || q.includes('tariff') || q.includes('bill')) {
+                    answer = `Your total energy load is currently set at ${totalKwh} kWh, resulting in an estimated bill of ${totalBill}. You can edit slab limits and rates anytime.`;
                 } else {
-                    answer = `Your total energy load is set at ${totalKwh} kWh, totaling an estimated bill of ${totalBill}. What else would you like to explore?`;
+                    answer = `That is an excellent question regarding our Sovereign-95 Quantum Energy Suite! Our system calculates progressive tariffs, renders 3D WebGL cyber graphics, and provides real-time voice telemetry. What else would you like to know?`;
                 }
             }
 
@@ -450,27 +455,23 @@
 
             robotGroup = new THREE.Group();
 
-            // Robot Head Box
             const headMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(1.3, 1.1, 1.1),
                 new THREE.MeshStandardMaterial({ color: 0x121026, metalness: 0.9, roughness: 0.2 })
             );
             robotGroup.add(headMesh);
 
-            // Glowing Optical Eyes
             const eyeMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff });
             const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), eyeMat); leftEye.position.set(-0.35, 0.2, 0.58);
             const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), eyeMat); rightEye.position.set(0.35, 0.2, 0.58);
             robotGroup.add(leftEye); robotGroup.add(rightEye);
 
-            // Robot Antenna
             const antennaRod = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5), new THREE.MeshStandardMaterial({ color: 0x8b5cf6 }));
             antennaRod.position.set(0, 0.75, 0);
             const antennaTip = new THREE.Mesh(new THREE.SphereGeometry(0.08), new THREE.MeshBasicMaterial({ color: 0xff0033 }));
             antennaTip.position.set(0, 1.0, 0);
             robotGroup.add(antennaRod); robotGroup.add(antennaTip);
 
-            // Articulating Robot Jaw
             robotJaw = new THREE.Mesh(
                 new THREE.BoxGeometry(0.9, 0.3, 0.95),
                 new THREE.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.8 })
