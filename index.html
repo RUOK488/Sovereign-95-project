@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN-95: Quantum Energy Suite & AI Avatar Workspace</title>
+    <title>SOVEREIGN-95: Quantum Energy Suite & AI Robot Workspace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@600;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -19,14 +19,14 @@
 </head>
 <body class="min-h-screen relative flex flex-col">
 
-    <!-- LIVE ANIMATED GRAPHICS BACKGROUND -->
+    <!-- LIVE ANIMATED BACKGROUND GRAPHICS -->
     <canvas id="bg-canvas"></canvas>
 
     <!-- TOP HEADER -->
     <header class="bg-slate-950/90 border-b border-cyan-500/40 px-6 py-3 flex flex-wrap justify-between items-center shadow-lg shadow-cyan-500/15">
         <div class="flex items-center space-x-3">
             <span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
-            <span class="font-orbitron text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-cyan-400 to-purple-500">SOVEREIGN-95 AI SUITE</span>
+            <span class="font-orbitron text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-cyan-400 to-purple-500">SOVEREIGN-95 AI ROBOT SUITE</span>
         </div>
         <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
             <div class="bg-purple-950/60 border border-purple-500/50 px-3 py-1 rounded-lg">
@@ -152,19 +152,20 @@
 
         </section>
 
-        <!-- RIGHT PANEL: 3D HUMAN AVATAR & CONVERSATIONAL AI -->
+        <!-- RIGHT PANEL: 3D ROBOT AVATAR & CONVERSATIONAL AI -->
         <section class="lg:col-span-5 space-y-6">
 
             <div class="glass-card rounded-2xl p-4 border border-purple-500/30 text-center relative flex flex-col items-center">
                 <div class="flex justify-between w-full items-center mb-2 px-2">
-                    <span class="text-[10px] font-orbitron uppercase tracking-widest text-purple-400 font-bold">3D HUMAN AI AVATAR</span>
+                    <span class="text-[10px] font-orbitron uppercase tracking-widest text-purple-400 font-bold">3D CYBER ROBOT AVATAR</span>
                     <span id="avatar-status" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 px-2 py-0.5 rounded">READY</span>
                 </div>
-                <div id="avatar-container" class="w-full h-52 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative flex items-center justify-center"></div>
+                <!-- 3D Robot Container -->
+                <div id="avatar-container" class="w-full h-56 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative flex items-center justify-center"></div>
                 
                 <div class="w-full flex gap-2 mb-2">
                     <button onclick="startVoiceListener()" id="mic-btn" class="flex-1 py-2 bg-gradient-to-r from-purple-600 to-cyan-500 text-white rounded-xl font-orbitron text-xs font-bold tracking-wider hover:opacity-90 transition shadow-lg shadow-purple-500/30 cursor-pointer">
-                        🎤 SPEAK TO AI AVATAR
+                        🎤 SPEAK TO ROBOT AI
                     </button>
                 </div>
 
@@ -175,7 +176,7 @@
                 </div>
 
                 <div id="chat-log" class="w-full h-28 overflow-y-auto bg-slate-950 p-3 rounded-xl border border-slate-800 text-left text-xs font-mono space-y-2 mb-2">
-                    <div class="text-purple-400">[AI Avatar]: Hello! I am Sovereign-95 AI, developed by Yamish Pal and Tumchobemo C Yanthan. Ask me anything!</div>
+                    <div class="text-purple-400">[Robot AI]: Greetings! I am your Sovereign-95 Cyber Robot Assistant, built by Yamish Pal and Tumchobemo. Ask me anything!</div>
                 </div>
 
                 <div class="w-full flex gap-2">
@@ -256,7 +257,7 @@
 
         // --- INITIALIZATION ---
         window.addEventListener('DOMContentLoaded', () => {
-            init3DHumanAvatar();
+            init3DRobotAvatar();
             init3DHologramHouse();
             recalculateMatrix();
         });
@@ -267,10 +268,10 @@
                 const cleanText = text.replace(/[*#_]/g, '');
                 const msg = new SpeechSynthesisUtterance(cleanText);
                 msg.rate = 1.0;
-                msg.pitch = 0.95;
+                msg.pitch = 0.85; // Robot pitch
                 const status = document.getElementById('avatar-status');
-                msg.onstart = () => { if(status) status.innerText = "SPEAKING"; animateHumanSpeaking(true); };
-                msg.onend = () => { if(status) status.innerText = "READY"; animateHumanSpeaking(false); };
+                msg.onstart = () => { if(status) status.innerText = "SPEAKING"; animateRobotSpeaking(true); };
+                msg.onend = () => { if(status) status.innerText = "READY"; animateRobotSpeaking(false); };
                 window.speechSynthesis.speak(msg);
             }
         }
@@ -327,7 +328,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `You are the Sovereign-95 AI Avatar created by engineering students Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084). Answer all questions naturally, conversationally, and thoroughly without markdown. User Question: ${query}` }] }]
+                        contents: [{ parts: [{ text: `You are the Sovereign-95 Cyber Robot AI Assistant created by engineering students Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084). Answer all questions naturally, conversationally, and thoroughly without markdown. User Question: ${query}` }] }]
                     })
                 });
                 const data = await response.json();
@@ -342,11 +343,11 @@
                 if (q.includes('editable') || q.includes('slabs editable') || q.includes('change slabs')) {
                     answer = "Yes! All tariff slabs, upper kWh limits, and rates per kWh are fully editable in real time using the input boxes on the left panel.";
                 } else if (q.includes('audible') || q.includes('hear me')) {
-                    answer = "Yes! You are perfectly audible. How can I assist you with our energy project today?";
+                    answer = "Yes! I am online and perfectly audible. How can I assist you with our energy project today?";
                 } else if (q.includes('morning') || q.includes('hello') || q.includes('hi')) {
-                    answer = "Good day! Welcome to the Sovereign-95 Energy Suite created by Yamish Pal and Tumchobemo.";
+                    answer = "Greetings! Welcome to the Sovereign-95 Energy Suite created by Yamish Pal and Tumchobemo.";
                 } else if (q.includes('who are you') || q.includes('introduce') || q.includes('creators')) {
-                    answer = "I am the Sovereign-95 AI Assistant, built by Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084).";
+                    answer = "I am your Sovereign-95 Cyber Robot Assistant, built by Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084).";
                 } else if (q.includes('slab') || q.includes('rate') || q.includes('tariff')) {
                     answer = `Our system breaks consumption into progressive slabs. Slab 1 charges $${document.getElementById('rate1')?.value || 3.5} per kWh up to ${document.getElementById('limit1')?.value || 150} kWh, and Slab 2 charges $${document.getElementById('rate2')?.value || 6.0} per kWh.`;
                 } else {
@@ -355,7 +356,7 @@
             }
 
             if (chatLog) {
-                chatLog.innerHTML += `<div class="text-purple-300">[AI Avatar]: ${answer}</div>`;
+                chatLog.innerHTML += `<div class="text-purple-300">[Robot AI]: ${answer}</div>`;
                 chatLog.scrollTop = chatLog.scrollHeight;
             }
             speakText(answer);
@@ -428,49 +429,70 @@
             speakText(`Removed appliance.`);
         }
 
-        // --- THREE.JS 3D AVATAR (GUARANTEED VISIBILITY) ---
-        let avatarScene, avatarCamera, avatarRenderer, headGroup, jawMesh, isHumanSpeaking = false;
-        function init3DHumanAvatar() {
+        // --- THREE.JS 3D CYBER ROBOT AVATAR ---
+        let robotScene, robotCamera, robotRenderer, robotGroup, robotJaw, isRobotSpeaking = false;
+        function init3DRobotAvatar() {
             const container = document.getElementById('avatar-container');
             if (!container) return;
             container.innerHTML = '';
-            const width = container.clientWidth || 300, height = container.clientHeight || 200;
+            const width = container.clientWidth || 300, height = container.clientHeight || 220;
 
-            avatarScene = new THREE.Scene();
-            avatarCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            avatarCamera.position.set(0, 0, 3.5);
+            robotScene = new THREE.Scene();
+            robotCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            robotCamera.position.set(0, 0, 3.8);
 
-            avatarRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            avatarRenderer.setSize(width, height);
-            container.appendChild(avatarRenderer.domElement);
+            robotRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            robotRenderer.setSize(width, height);
+            container.appendChild(robotRenderer.domElement);
 
-            avatarScene.add(new THREE.DirectionalLight(0x00f3ff, 2.5)).position.set(2, 3, 5);
-            avatarScene.add(new THREE.AmbientLight(0x8b5cf6, 1.5));
+            robotScene.add(new THREE.DirectionalLight(0x00f3ff, 2.5)).position.set(2, 3, 5);
+            robotScene.add(new THREE.AmbientLight(0x8b5cf6, 1.5));
 
-            headGroup = new THREE.Group();
-            const craniumGeo = new THREE.SphereGeometry(0.8, 32, 32); craniumGeo.scale(1, 1.2, 1);
-            headGroup.add(new THREE.Mesh(craniumGeo, new THREE.MeshStandardMaterial({ color: 0x121026, roughness: 0.3, metalness: 0.8 })));
+            robotGroup = new THREE.Group();
 
+            // Robot Head Box
+            const headMesh = new THREE.Mesh(
+                new THREE.BoxGeometry(1.3, 1.1, 1.1),
+                new THREE.MeshStandardMaterial({ color: 0x121026, metalness: 0.9, roughness: 0.2 })
+            );
+            robotGroup.add(headMesh);
+
+            // Glowing Optical Eyes
             const eyeMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff });
-            const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), eyeMat); leftEye.position.set(-0.28, 0.2, 0.72);
-            const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), eyeMat); rightEye.position.set(0.28, 0.2, 0.72);
-            headGroup.add(leftEye); headGroup.add(rightEye);
+            const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), eyeMat); leftEye.position.set(-0.35, 0.2, 0.58);
+            const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), eyeMat); rightEye.position.set(0.35, 0.2, 0.58);
+            robotGroup.add(leftEye); robotGroup.add(rightEye);
 
-            jawMesh = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.3, 0.6), new THREE.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.9 }));
-            jawMesh.position.set(0, -0.6, 0.2);
-            headGroup.add(jawMesh);
-            avatarScene.add(headGroup);
+            // Robot Antenna
+            const antennaRod = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5), new THREE.MeshStandardMaterial({ color: 0x8b5cf6 }));
+            antennaRod.position.set(0, 0.75, 0);
+            const antennaTip = new THREE.Mesh(new THREE.SphereGeometry(0.08), new THREE.MeshBasicMaterial({ color: 0xff0033 }));
+            antennaTip.position.set(0, 1.0, 0);
+            robotGroup.add(antennaRod); robotGroup.add(antennaTip);
 
-            function animateAvatar() {
-                requestAnimationFrame(animateAvatar);
-                headGroup.rotation.y += 0.005;
-                if (isHumanSpeaking) { jawMesh.position.y = -0.6 - Math.sin(Date.now() * 0.025) * 0.08; }
-                else { jawMesh.position.y = -0.6; }
-                avatarRenderer.render(avatarScene, avatarCamera);
+            // Articulating Robot Jaw
+            robotJaw = new THREE.Mesh(
+                new THREE.BoxGeometry(0.9, 0.3, 0.95),
+                new THREE.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.8 })
+            );
+            robotJaw.position.set(0, -0.45, 0.05);
+            robotGroup.add(robotJaw);
+
+            robotScene.add(robotGroup);
+
+            function animateRobot() {
+                requestAnimationFrame(animateRobot);
+                robotGroup.rotation.y += 0.005;
+                if (isRobotSpeaking) {
+                    robotJaw.position.y = -0.45 - Math.sin(Date.now() * 0.03) * 0.08;
+                } else {
+                    robotJaw.position.y = -0.45;
+                }
+                robotRenderer.render(robotScene, robotCamera);
             }
-            animateAvatar();
+            animateRobot();
         }
-        function animateHumanSpeaking(state) { isHumanSpeaking = state; }
+        function animateRobotSpeaking(state) { isRobotSpeaking = state; }
 
         function init3DHologramHouse() {
             const container = document.getElementById('house-container');
