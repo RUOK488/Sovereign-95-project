@@ -1,0 +1,10 @@
+---
+
+### How to update your README on GitHub:
+1. Open your `README.md` file in VS Code.
+2. Replace its contents with the markdown code above and save (`Ctrl + S`).
+3. Run these terminal commands to publish it live:
+   ```powershell
+   git add README.md
+   git commit -m "Update README with professional project documentation and developer credentials"
+   git push origin main
