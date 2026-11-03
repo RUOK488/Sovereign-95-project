@@ -1,5 +1,6 @@
-
-<!DOCTYPE html>
+# Let's inspect the HTML around line 16 or anywhere else in index.html where CSS/JS might be malformed.
+# Let's write a clean, perfectly structured index.html file with valid HTML, CSS, and JavaScript (NO python comments or syntax bugs).
+clean_html = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,14 +15,14 @@
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         .glow-cyan { text-shadow: 0 0 15px rgba(0, 243, 255, 0.8); }
         .glass-card { background: rgba(12, 10, 24, 0.88); backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.35); }
-        #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+        .bg-canvas-fixed { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
         header, main { position: relative; z-index: 10; }
     </style>
 </head>
 <body class="min-h-screen relative flex flex-col">
 
     <!-- LIVE ANIMATED BACKGROUND GRAPHICS -->
-    <canvas id="bg-canvas"></canvas>
+    <canvas id="bg-canvas" class="bg-canvas-fixed"></canvas>
 
     <!-- TOP HEADER -->
     <header class="bg-slate-950/90 border-b border-cyan-500/40 px-6 py-3 flex flex-wrap justify-between items-center shadow-lg shadow-cyan-500/15">
@@ -162,7 +163,7 @@
                     <span id="avatar-status" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 px-2 py-0.5 rounded">BOOTING</span>
                 </div>
                 <!-- 3D Robot Container -->
-                <div id="avatar-container" class="w-full h-56 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative flex items-center justify-center"></div>
+                <div id="avatar-container" class="w-full h-56 min-h-[220px] rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative flex items-center justify-center"></div>
                 
                 <div class="w-full flex gap-2 mb-2">
                     <button onclick="startVoiceListener()" id="mic-btn" class="flex-1 py-2 bg-gradient-to-r from-purple-600 to-cyan-500 text-white rounded-xl font-orbitron text-xs font-bold tracking-wider hover:opacity-90 transition shadow-lg shadow-purple-500/30 cursor-pointer">
@@ -491,7 +492,7 @@
             const container = document.getElementById('avatar-container');
             if (!container) return;
             container.innerHTML = '';
-            const width = container.clientWidth || 300, height = container.clientHeight || 220;
+            const width = container.clientWidth || 400, height = container.clientHeight || 250;
 
             robotScene = new THREE.Scene();
             robotCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
@@ -581,6 +582,6 @@
 '''
 
 with open('index.html', 'w', encoding='utf-8') as f:
-    f.write(complete_html)
+    f.write(clean_html)
 
-print("Successfully updated index.html with boot/shutdown animations, bright 3D robot, and dual-mode chat training!")
+print("index.html fully cleaned and saved as valid HTML without any comment artifacts!")
