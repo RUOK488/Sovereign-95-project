@@ -159,7 +159,7 @@
             <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="font-orbitron text-sm font-bold text-white tracking-wider">Custom Appliance Manager</h3>
-                    <span class="text-xs font-mono text-slate-400">Add by sending direct kWh or Watts</span>
+                    <span class="text-xs font-mono text-slate-400">Add by sending direct kWh</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
                     <div>
@@ -205,7 +205,7 @@
                     <span class="text-[10px] font-orbitron uppercase tracking-widest text-purple-400 font-bold">3D AI ROBOT ASSISTANT</span>
                     <span id="robot-status" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 px-2 py-0.5 rounded">READY</span>
                 </div>
-                <div id="robot-container" class="w-full h-44 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3"></div>
+                <div id="robot-container" class="w-full h-48 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative"></div>
                 
                 <!-- Voice & Text Q&A -->
                 <div class="w-full flex gap-2 mb-2">
@@ -231,7 +231,7 @@
                     <span class="text-[10px] font-orbitron uppercase tracking-widest text-cyan-400 font-bold">3D HOLOGRAM HOUSE MATRIX</span>
                     <span class="text-[10px] font-mono text-slate-400">Interactive Wireframe Grid</span>
                 </div>
-                <div id="house-container" class="w-full h-48 rounded-xl overflow-hidden bg-slate-950/90 border border-cyan-500/20"></div>
+                <div id="house-container" class="w-full h-48 rounded-xl overflow-hidden bg-slate-950/90 border border-cyan-500/20 relative"></div>
             </div>
 
         </section>
@@ -272,7 +272,7 @@
             setTimeout(() => { window.location.reload(); }, 3000);
         }
 
-        // --- 2. VOICE SYNTHESIS & GUARANTEED AI Q&A ---
+        // --- 2. VOICE SYNTHESIS & INTELLIGENT AI Q&A ---
         function speakText(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -300,7 +300,6 @@
             await queryGeminiAI(query);
         }
 
-        // Web Speech Recognition for Voice Assistant
         function startVoiceListener() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
@@ -339,17 +338,23 @@
                 const data = await response.json();
                 answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
             } catch (err) {
-                // Fallback intelligent response if network blocks
+                // Network or CORS block fallback
             }
 
+            // Intelligent dynamic fallback based on user query keywords
             if (!answer) {
                 const q = query.toLowerCase();
-                if (q.includes('slab') || q.includes('tariff')) {
-                    answer = "Progressive tariff slabs charge higher rates as your monthly kWh consumption increases across Slab 1, 2, and 3.";
-                } else if (q.includes('reduce') || q.includes('save')) {
-                    answer = "To reduce energy bills, optimize heavy appliances like ACs and water heaters during off-peak hours.";
+                const totalBill = document.getElementById('total-bill-display').innerText;
+                const totalKwh = document.getElementById('kwh-slider').value;
+
+                if (q.includes('slab') || q.includes('rate') || q.includes('tariff')) {
+                    answer = `Your current tariff is split into progressive slabs. Slab 1 rate is $${document.getElementById('rate1').value}/kWh up to ${document.getElementById('limit1').value} kWh, and Slab 2 is $${document.getElementById('rate2').value}/kWh.`;
+                } else if (q.includes('reduce') || q.includes('save') || q.includes('bill')) {
+                    answer = `Your total monthly consumption is ${totalKwh} kWh, resulting in an estimated bill of ${totalBill}. To reduce this, consider shifting heavy appliance usage to off-peak hours.`;
+                } else if (q.includes('yamish') || q.includes('tumchobemo')) {
+                    answer = `This system is engineered by Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084).`;
                 } else {
-                    answer = `Energy telemetry confirms your active load is operating within standard parameters. Current bill is ${document.getElementById('total-bill-display').innerText}.`;
+                    answer = `Grid telemetry analyzed successfully for your query. Your current total estimated electricity bill is ${totalBill} for ${totalKwh} kWh.`;
                 }
             }
 
@@ -394,15 +399,12 @@
 
             customAppliancesList.push({ name, kwh });
 
-            // Add kWh to slider
             const slider = document.getElementById('kwh-slider');
             slider.value = Math.min(parseFloat(slider.max), parseFloat(slider.value) + kwh);
             recalculateMatrix();
 
-            // Spawn 3D Object in House
             spawnHologramObject(name);
 
-            // Reset inputs & refresh table
             document.getElementById('app-name').value = '';
             document.getElementById('app-kwh').value = '';
             renderApplianceTable();
@@ -433,24 +435,28 @@
             speakText(`Removed appliance.`);
         }
 
-        // --- 5. THREE.JS 3D AI ROBOT AVATAR ---
-        let robotScene, robotCamera, robotRenderer, robotJaw;
+        // --- 5. THREE.JS 3D AI ROBOT AVATAR (FIXED CONTAINER VISIBILITY) ---
+        let robotScene, robotCamera, robotRenderer, robotGroup, robotJaw;
         let isRobotSpeaking = false;
 
         function init3DRobotAvatar() {
             const container = document.getElementById('robot-container');
+            const width = container.clientWidth || 300;
+            const height = container.clientHeight || 180;
+
             robotScene = new THREE.Scene();
-            robotCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-            robotCamera.position.z = 3.5;
+            robotCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            robotCamera.position.set(0, 0, 3.5);
 
             robotRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            robotRenderer.setSize(container.clientWidth, container.clientHeight);
+            robotRenderer.setSize(width, height);
+            robotRenderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(robotRenderer.domElement);
 
-            robotScene.add(new THREE.DirectionalLight(0x00f3ff, 1.5)).position.set(2, 2, 5);
-            robotScene.add(new THREE.AmbientLight(0x8b5cf6, 0.8));
+            robotScene.add(new THREE.DirectionalLight(0x00f3ff, 2.0)).position.set(2, 3, 5);
+            robotScene.add(new THREE.AmbientLight(0x8b5cf6, 1.2));
 
-            const robotGroup = new THREE.Group();
+            robotGroup = new THREE.Group();
             
             const headMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(1.2, 1.0, 1.0),
@@ -493,12 +499,15 @@
 
         function init3DHologramHouse() {
             const container = document.getElementById('house-container');
+            const width = container.clientWidth || 300;
+            const height = container.clientHeight || 180;
+
             houseScene = new THREE.Scene();
-            houseCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            houseCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
             houseCamera.position.set(4, 3, 5); houseCamera.lookAt(0, 0, 0);
 
             houseRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            houseRenderer.setSize(container.clientWidth, container.clientHeight);
+            houseRenderer.setSize(width, height);
             container.appendChild(houseRenderer.domElement);
 
             houseGroup = new THREE.Group();
