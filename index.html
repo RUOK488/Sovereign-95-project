@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN-95: Quantum Energy Suite & AI Robot Workspace</title>
+    <title>SOVEREIGN-95: Google Knowledge Engine & AI Robot Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@600;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -26,7 +26,7 @@
     <header class="bg-slate-950/90 border-b border-cyan-500/40 px-6 py-3 flex flex-wrap justify-between items-center shadow-lg shadow-cyan-500/15">
         <div class="flex items-center space-x-3">
             <span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
-            <span class="font-orbitron text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-cyan-400 to-purple-500">SOVEREIGN-95 AI ROBOT SUITE</span>
+            <span class="font-orbitron text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-cyan-400 to-purple-500">SOVEREIGN-95 KNOWLEDGE ENGINE</span>
         </div>
         <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
             <div class="bg-purple-950/60 border border-purple-500/50 px-3 py-1 rounded-lg">
@@ -51,7 +51,7 @@
                         <h2 class="font-orbitron text-lg font-bold text-white tracking-wider">Editable Tariff Slabs & Rates</h2>
                         <p class="text-xs text-slate-400 font-mono">Fully editable limits and charges per kWh</p>
                     </div>
-                    <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-400/40 text-cyan-400 rounded-lg text-xs font-mono font-bold">LIVE EDIT</span>
+                    <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-400/40 text-cyan-400 rounded-lg text-xs font-mono font-bold">LIVE INDEXED</span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
@@ -152,7 +152,7 @@
 
         </section>
 
-        <!-- RIGHT PANEL: 3D ROBOT AVATAR & CONVERSATIONAL AI -->
+        <!-- RIGHT PANEL: 3D ROBOT AVATAR & KNOWLEDGE ENGINE CHAT -->
         <section class="lg:col-span-5 space-y-6">
 
             <div class="glass-card rounded-2xl p-4 border border-purple-500/30 text-center relative flex flex-col items-center">
@@ -160,28 +160,27 @@
                     <span class="text-[10px] font-orbitron uppercase tracking-widest text-purple-400 font-bold">3D CYBER ROBOT AVATAR</span>
                     <span id="avatar-status" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 px-2 py-0.5 rounded">READY</span>
                 </div>
-                <!-- 3D Robot Container -->
                 <div id="avatar-container" class="w-full h-56 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative flex items-center justify-center"></div>
                 
                 <div class="w-full flex gap-2 mb-2">
                     <button onclick="startVoiceListener()" id="mic-btn" class="flex-1 py-2 bg-gradient-to-r from-purple-600 to-cyan-500 text-white rounded-xl font-orbitron text-xs font-bold tracking-wider hover:opacity-90 transition shadow-lg shadow-purple-500/30 cursor-pointer">
-                        🎤 SPEAK TO ROBOT AI
+                        🎤 SPEAK TO KNOWLEDGE ENGINE
                     </button>
                 </div>
 
                 <div class="flex flex-wrap gap-1.5 mb-2 w-full text-[10px] font-mono">
-                    <button onclick="askPromptChip('Hello! Please introduce yourself and your creators.')" class="bg-slate-900 border border-slate-700 hover:border-cyan-400 px-2 py-1 rounded text-cyan-300 cursor-pointer">👋 Introduce Yourself</button>
-                    <button onclick="askPromptChip('Are these tariff slabs editable?')" class="bg-slate-900 border border-slate-700 hover:border-purple-400 px-2 py-1 rounded text-purple-300 cursor-pointer">✏️ Editable Slabs?</button>
-                    <button onclick="askPromptChip('How does the multi-slab tariff calculation work in this system?')" class="bg-slate-900 border border-slate-700 hover:border-red-400 px-2 py-1 rounded text-red-300 cursor-pointer">⚡ Explain Tariff Slabs</button>
+                    <button onclick="askPromptChip('What is Sovereign-95 and who developed it?')" class="bg-slate-900 border border-slate-700 hover:border-cyan-400 px-2 py-1 rounded text-cyan-300 cursor-pointer">🔍 Project Overview</button>
+                    <button onclick="askPromptChip('Are tariff slabs editable in real time?')" class="bg-slate-900 border border-slate-700 hover:border-purple-400 px-2 py-1 rounded text-purple-300 cursor-pointer">✏️ Editable Slabs?</button>
+                    <button onclick="askPromptChip('Explain the multi-slab calculation formula.')" class="bg-slate-900 border border-slate-700 hover:border-red-400 px-2 py-1 rounded text-red-300 cursor-pointer">⚡ Tariff Formula</button>
                 </div>
 
                 <div id="chat-log" class="w-full h-28 overflow-y-auto bg-slate-950 p-3 rounded-xl border border-slate-800 text-left text-xs font-mono space-y-2 mb-2">
-                    <div class="text-purple-400">[Robot AI]: Greetings! I am your Sovereign-95 Cyber Robot Assistant, built by Yamish Pal and Tumchobemo. Ask me anything!</div>
+                    <div class="text-purple-400">[Knowledge Engine]: Indexed 100% of Sovereign-95 database. Ask any question for instant structured answers.</div>
                 </div>
 
                 <div class="w-full flex gap-2">
-                    <input type="text" id="user-query" placeholder="Ask anything..." onkeypress="if(event.key === 'Enter') sendTextQuery()" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white outline-none focus:border-purple-500">
-                    <button onclick="sendTextQuery()" class="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-orbitron text-xs font-bold transition cursor-pointer">ASK</button>
+                    <input type="text" id="user-query" placeholder="Ask search query..." onkeypress="if(event.key === 'Enter') sendTextQuery()" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white outline-none focus:border-purple-500">
+                    <button onclick="sendTextQuery()" class="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-orbitron text-xs font-bold transition cursor-pointer">SEARCH</button>
                 </div>
             </div>
 
@@ -268,7 +267,7 @@
                 const cleanText = text.replace(/[*#_]/g, '');
                 const msg = new SpeechSynthesisUtterance(cleanText);
                 msg.rate = 1.0;
-                msg.pitch = 0.85; // Robot pitch
+                msg.pitch = 0.85;
                 const status = document.getElementById('avatar-status');
                 msg.onstart = () => { if(status) status.innerText = "SPEAKING"; animateRobotSpeaking(true); };
                 msg.onend = () => { if(status) status.innerText = "READY"; animateRobotSpeaking(false); };
@@ -279,7 +278,7 @@
         function speakAnalysis() {
             const kwh = document.getElementById('kwh-slider').value;
             const bill = document.getElementById('total-bill-display').innerText;
-            speakText(`Current calculated total consumption is ${kwh} kilowatt hours, with an estimated total bill of ${bill}.`);
+            speakText(`Current indexed consumption is ${kwh} kilowatt hours, totaling an estimated bill of ${bill}.`);
         }
 
         function askPromptChip(text) {
@@ -293,7 +292,7 @@
             const query = input.value.trim();
             if (!query) return;
             input.value = "";
-            await queryGeminiAI(query);
+            await queryGoogleKnowledgeEngine(query);
         }
 
         function startVoiceListener() {
@@ -309,16 +308,16 @@
             recognition.onresult = async (event) => {
                 const query = event.results[0][0].transcript;
                 if(status) status.innerText = "PROCESSING";
-                await queryGeminiAI(query);
+                await queryGoogleKnowledgeEngine(query);
             };
             recognition.onerror = () => { if(status) status.innerText = "READY"; };
             recognition.start();
         }
 
-        async function queryGeminiAI(query) {
+        async function queryGoogleKnowledgeEngine(query) {
             const chatLog = document.getElementById('chat-log');
             if (chatLog) {
-                chatLog.innerHTML += `<div class="text-cyan-400">[You]: ${query}</div>`;
+                chatLog.innerHTML += `<div class="text-cyan-400">[Query]: ${query}</div>`;
                 chatLog.scrollTop = chatLog.scrollHeight;
             }
 
@@ -328,40 +327,36 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `You are the Sovereign-95 Cyber Robot AI Assistant created by engineering students Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084). Answer all questions naturally, conversationally, and thoroughly without markdown. User Question: ${query}` }] }]
+                        contents: [{ parts: [{ text: `You are the Google-indexed Knowledge Engine for the Sovereign-95 Energy Suite, engineered by Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084). Answer queries with structured, highly authoritative, concise Google-search-style summaries. User Query: ${query}` }] }]
                     })
                 });
                 const data = await response.json();
                 answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
             } catch (err) {}
 
+            // GOOGLE KNOWLEDGE ENGINE STRUCTURED FALLBACK INDEX
             if (!answer) {
                 const q = query.toLowerCase();
                 const totalBill = document.getElementById('total-bill-display')?.innerText || "$2700.00";
                 const totalKwh = document.getElementById('kwh-slider')?.value || "450";
 
-                // FULLY TRAINED Q&A KNOWLEDGE BASE
-                if (q.includes('editable') || q.includes('slabs editable') || q.includes('change slabs') || q.includes('modify')) {
-                    answer = "Yes! All tariff slabs, upper kWh limits, and rates per kWh are fully editable in real time using the input boxes on the left panel.";
-                } else if (q.includes('calculation') || q.includes('how does') || q.includes('formula') || q.includes('work')) {
-                    answer = "Our multi-slab tariff splits total monthly kilowatt hours sequentially across tiers. Slab 1 covers initial usage at a base rate, Slab 2 covers intermediate usage, and Slab 3 handles remaining load above the second threshold.";
-                } else if (q.includes('appliance') || q.includes('add device') || q.includes('custom')) {
-                    answer = "You can add custom appliances by entering their name and direct monthly kilowatt hours into the Custom Appliance Manager. This automatically updates your total load and renders a glowing hologram node.";
-                } else if (q.includes('audible') || q.includes('hear me')) {
-                    answer = "Yes! I am online and perfectly audible. How can I assist you with our energy project today?";
-                } else if (q.includes('morning') || q.includes('hello') || q.includes('hi') || q.includes('hey')) {
-                    answer = "Greetings! Welcome to the Sovereign-95 Energy Suite created by Yamish Pal and Tumchobemo.";
-                } else if (q.includes('who are you') || q.includes('introduce') || q.includes('creators') || q.includes('roll')) {
-                    answer = "I am your Sovereign-95 Cyber Robot Assistant, built by Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084).";
-                } else if (q.includes('slab') || q.includes('rate') || q.includes('tariff') || q.includes('bill')) {
-                    answer = `Your total energy load is currently set at ${totalKwh} kWh, resulting in an estimated bill of ${totalBill}. You can edit slab limits and rates anytime.`;
+                if (q.includes('editable') || q.includes('slabs') || q.includes('modify')) {
+                    answer = "Yes. All tariff slabs, maximum kWh thresholds, and cost rates per kWh are fully editable in real time via the input matrix.";
+                } else if (q.includes('calculation') || q.includes('formula') || q.includes('work')) {
+                    answer = "Multi-slab progressive calculation: Total monthly kWh is partitioned sequentially across tier limits (Slab 1, Slab 2, and Slab 3), multiplying each tier by its respective unit rate.";
+                } else if (q.includes('appliance') || q.includes('device') || q.includes('kwh')) {
+                    answer = "Custom appliances can be added by inputting direct monthly kilowatt-hours into the Custom Appliance Manager, which dynamically scales total consumption and renders Three.js hologram nodes.";
+                } else if (q.includes('who') || q.includes('developer') || q.includes('creators') || q.includes('roll')) {
+                    answer = "Sovereign-95 is developed by Yamish Pal (Roll No: BTEE24O2091) and Tumchobemo C Yanthan (Roll No: BTEE24O1084).";
+                } else if (q.includes('morning') || q.includes('hello') || q.includes('hi')) {
+                    answer = "Search indexed successfully. Welcome to the Sovereign-95 Quantum Energy Suite.";
                 } else {
-                    answer = `That is an excellent question regarding our Sovereign-95 Quantum Energy Suite! Our system calculates progressive tariffs, renders 3D WebGL cyber graphics, and provides real-time voice telemetry. What else would you like to know?`;
+                    answer = `Indexed Result: Your current system telemetry reports a total load of ${totalKwh} kWh with an estimated monthly bill of ${totalBill}.`;
                 }
             }
 
             if (chatLog) {
-                chatLog.innerHTML += `<div class="text-purple-300">[Robot AI]: ${answer}</div>`;
+                chatLog.innerHTML += `<div class="text-purple-300">[Knowledge Engine]: ${answer}</div>`;
                 chatLog.scrollTop = chatLog.scrollHeight;
             }
             speakText(answer);
@@ -406,7 +401,7 @@
             if(slider) slider.value = Math.min(parseFloat(slider.max), parseFloat(slider.value) + kwh);
             recalculateMatrix();
             renderApplianceTable();
-            speakText(`Added ${name} consuming ${kwh} kilowatt hours.`);
+            speakText(`Indexed appliance ${name} with ${kwh} kilowatt hours.`);
         }
 
         function renderApplianceTable() {
@@ -431,7 +426,7 @@
             recalculateMatrix();
             customAppliancesList.splice(idx, 1);
             renderApplianceTable();
-            speakText(`Removed appliance.`);
+            speakText(`Removed appliance index.`);
         }
 
         // --- THREE.JS 3D CYBER ROBOT AVATAR ---
