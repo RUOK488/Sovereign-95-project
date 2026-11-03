@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN-95: Quantum AI Robot & Editable Tariff Suite</title>
+    <title>SOVEREIGN-95: Quantum Energy Suite & AI Avatar Workspace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@600;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -80,7 +80,7 @@
     <!-- MAIN DASHBOARD -->
     <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
 
-        <!-- LEFT PANEL: EDITABLE TARIFF MATRIX & DIRECT kWh APPLIANCE ADDER -->
+        <!-- LEFT PANEL: EDITABLE TARIFF MATRIX & CUSTOM APPLIANCE ADDER -->
         <section class="lg:col-span-7 space-y-6">
 
             <!-- EDITABLE TARIFF CALCULATOR MATRIX -->
@@ -196,31 +196,38 @@
 
         </section>
 
-        <!-- RIGHT PANEL: 3D AI ROBOT & CHAT ASSISTANT -->
+        <!-- RIGHT PANEL: 3D HUMAN AVATAR & CONVERSATIONAL AI -->
         <section class="lg:col-span-5 space-y-6">
 
-            <!-- 3D AI ROBOT & VOICE Q&A -->
+            <!-- 3D HUMAN AVATAR & CONVERSATIONAL AI -->
             <div class="glass-card rounded-2xl p-4 border border-purple-500/30 text-center relative flex flex-col items-center">
                 <div class="flex justify-between w-full items-center mb-2 px-2">
-                    <span class="text-[10px] font-orbitron uppercase tracking-widest text-purple-400 font-bold">3D AI ROBOT ASSISTANT</span>
-                    <span id="robot-status" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 px-2 py-0.5 rounded">READY</span>
+                    <span class="text-[10px] font-orbitron uppercase tracking-widest text-purple-400 font-bold">3D HUMAN AI AVATAR</span>
+                    <span id="avatar-status" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 px-2 py-0.5 rounded">READY</span>
                 </div>
-                <div id="robot-container" class="w-full h-48 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative"></div>
+                <div id="avatar-container" class="w-full h-48 rounded-xl overflow-hidden bg-slate-950/90 border border-purple-500/20 mb-3 relative"></div>
                 
                 <!-- Voice & Text Q&A -->
                 <div class="w-full flex gap-2 mb-2">
                     <button onclick="startVoiceListener()" id="mic-btn" class="flex-1 py-2 bg-gradient-to-r from-purple-600 to-cyan-500 text-white rounded-xl font-orbitron text-xs font-bold tracking-wider hover:opacity-90 transition shadow-lg shadow-purple-500/30">
-                        🎤 SPEAK TO ROBOT
+                        🎤 SPEAK TO AI AVATAR
                     </button>
+                </div>
+
+                <!-- Quick Teacher & Intro Prompt Chips -->
+                <div class="flex flex-wrap gap-1.5 mb-2 w-full text-[10px] font-mono">
+                    <button onclick="askPromptChip('Hello! Please introduce yourself and your project creators.')" class="bg-slate-900 border border-slate-700 hover:border-cyan-400 px-2 py-1 rounded text-cyan-300">👋 Introduce Yourself</button>
+                    <button onclick="askPromptChip('Can you explain the main objectives of this Sovereign-95 energy project?')" class="bg-slate-900 border border-slate-700 hover:border-purple-400 px-2 py-1 rounded text-purple-300">🎓 Project Overview</button>
+                    <button onclick="askPromptChip('How does the multi-slab tariff calculation work in this system?')" class="bg-slate-900 border border-slate-700 hover:border-red-400 px-2 py-1 rounded text-red-300">⚡ Explain Tariff Slabs</button>
                 </div>
 
                 <!-- Chat Box Log -->
                 <div id="chat-log" class="w-full h-28 overflow-y-auto bg-slate-950 p-3 rounded-xl border border-slate-800 text-left text-xs font-mono space-y-2 mb-2">
-                    <div class="text-purple-400">[Robot AI]: Greetings Yamish and Tumchobemo. Ask me anything about your energy bill or tariffs!</div>
+                    <div class="text-purple-400">[AI Avatar]: Hello! I am Sovereign-95 AI, created by Yamish Pal and Tumchobemo C Yanthan. Ask me anything about our project, tariffs, or basic introductions!</div>
                 </div>
 
                 <div class="w-full flex gap-2">
-                    <input type="text" id="user-query" placeholder="Type question..." onkeypress="if(event.key === 'Enter') sendTextQuery()" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white outline-none focus:border-purple-500">
+                    <input type="text" id="user-query" placeholder="Ask anything (e.g. Introduce yourself)..." onkeypress="if(event.key === 'Enter') sendTextQuery()" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white outline-none focus:border-purple-500">
                     <button onclick="sendTextQuery()" class="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-orbitron text-xs font-bold transition">ASK</button>
                 </div>
             </div>
@@ -261,7 +268,7 @@
             const intro = document.getElementById('intro-screen');
             intro.style.opacity = '0';
             setTimeout(() => { intro.style.display = 'none'; }, 800);
-            speakText("Sovereign 95 Quantum Robot online. Welcome Yamish Pal and Tumchobemo.");
+            speakText("Sovereign 95 Quantum AI Avatar online. Hello teachers and visitors, welcome!");
         }
 
         function triggerShutdown() {
@@ -272,16 +279,16 @@
             setTimeout(() => { window.location.reload(); }, 3000);
         }
 
-        // --- 2. VOICE SYNTHESIS & INTELLIGENT AI Q&A ---
+        // --- 2. VOICE SYNTHESIS & CONVERSATIONAL AI ---
         function speakText(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const msg = new SpeechSynthesisUtterance(text);
                 msg.rate = 1.0;
-                msg.pitch = 0.85; // Robot resonance
-                const status = document.getElementById('robot-status');
-                msg.onstart = () => { if(status) status.innerText = "SPEAKING"; animateRobotSpeaking(true); };
-                msg.onend = () => { if(status) status.innerText = "READY"; animateRobotSpeaking(false); };
+                msg.pitch = 0.95; // Natural male voice pitch
+                const status = document.getElementById('avatar-status');
+                msg.onstart = () => { if(status) status.innerText = "SPEAKING"; animateHumanSpeaking(true); };
+                msg.onend = () => { if(status) status.innerText = "READY"; animateHumanSpeaking(false); };
                 window.speechSynthesis.speak(msg);
             }
         }
@@ -290,6 +297,11 @@
             const kwh = document.getElementById('kwh-slider').value;
             const bill = document.getElementById('total-bill-display').innerText;
             speakText(`Current calculated total consumption is ${kwh} kilowatt hours, with an estimated total bill of ${bill}.`);
+        }
+
+        function askPromptChip(text) {
+            document.getElementById('user-query').value = text;
+            sendTextQuery();
         }
 
         async function sendTextQuery() {
@@ -309,7 +321,7 @@
 
             const recognition = new SpeechRecognition();
             recognition.lang = 'en-US';
-            const status = document.getElementById('robot-status');
+            const status = document.getElementById('avatar-status');
 
             recognition.onstart = () => { status.innerText = "LISTENING"; };
             recognition.onresult = async (event) => {
@@ -332,36 +344,38 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `You are Sovereign-95 Robot AI Assistant built for developers Yamish Pal and Tumchobemo. Answer concisely about electrical energy consumption, appliances, and tariffs. User Question: ${query}` }] }]
+                        contents: [{ parts: [{ text: `You are the Sovereign-95 Conversational AI Avatar created by engineering students Yamish Pal (Roll: BTEE24O2091) and Tumchobemo C Yanthan (Roll: BTEE24O1084). You can engage in polite face-to-face classroom conversation, introduce yourself and the creators, answer any teacher questions regarding electrical energy consumption, progressive multi-slab tariffs, and Three.js 3D visualization. Answer naturally, clearly, and concisely. User Query: ${query}` }] }]
                     })
                 });
                 const data = await response.json();
                 answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
             } catch (err) {
-                // Network or CORS block fallback
+                // Network or API block fallback
             }
 
-            // Intelligent dynamic fallback based on user query keywords
+            // Intelligent Conversational Fallback Rules
             if (!answer) {
                 const q = query.toLowerCase();
                 const totalBill = document.getElementById('total-bill-display').innerText;
                 const totalKwh = document.getElementById('kwh-slider').value;
 
-                if (q.includes('slab') || q.includes('rate') || q.includes('tariff')) {
-                    answer = `Your current tariff is split into progressive slabs. Slab 1 rate is $${document.getElementById('rate1').value}/kWh up to ${document.getElementById('limit1').value} kWh, and Slab 2 is $${document.getElementById('rate2').value}/kWh.`;
-                } else if (q.includes('reduce') || q.includes('save') || q.includes('bill')) {
-                    answer = `Your total monthly consumption is ${totalKwh} kWh, resulting in an estimated bill of ${totalBill}. To reduce this, consider shifting heavy appliance usage to off-peak hours.`;
-                } else if (q.includes('yamish') || q.includes('tumchobemo')) {
-                    answer = `This system is engineered by Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084).`;
+                if (q.includes('hello') || q.includes('hi') || q.includes('introduce') || q.includes('who are you')) {
+                    answer = "Hello! I am the Sovereign-95 AI Assistant, developed by Yamish Pal (Roll BTEE24O2091) and Tumchobemo C Yanthan (Roll BTEE24O1084). It is a pleasure to meet you!";
+                } else if (q.includes('project') || q.includes('objective') || q.includes('about')) {
+                    answer = "Our Sovereign-95 project is an interactive electricity bill and energy consumption analyzer. It features dynamic multi-slab tariff calculations, real-time custom appliance load tracking, and interactive 3D WebGL visualizations.";
+                } else if (q.includes('slab') || q.includes('rate') || q.includes('tariff')) {
+                    answer = `The system uses progressive billing where energy is split into editable slabs: Slab 1 charges $${document.getElementById('rate1').value}/kWh up to ${document.getElementById('limit1').value} kWh, and Slab 2 charges $${document.getElementById('rate2').value}/kWh.`;
+                } else if (q.includes('teacher') || q.includes('question') || q.includes('marks') || q.includes('viva')) {
+                    answer = "I am fully prepared for academic evaluation! You can ask me about our formulas, progressive tariff slabs, appliance wattage calculations, or WebGL rendering.";
                 } else {
-                    answer = `Grid telemetry analyzed successfully for your query. Your current total estimated electricity bill is ${totalBill} for ${totalKwh} kWh.`;
+                    answer = `Thank you for asking. Our system currently tracks a total monthly load of ${totalKwh} kWh with an estimated cost of ${totalBill}. How else can I assist your evaluation today?`;
                 }
             }
 
-            chatLog.innerHTML += `<div class="text-purple-300">[Robot AI]: ${answer}</div>`;
+            chatLog.innerHTML += `<div class="text-purple-300">[AI Avatar]: ${answer}</div>`;
             chatLog.scrollTop = chatLog.scrollHeight;
             speakText(answer);
-            document.getElementById('robot-status').innerText = "READY";
+            document.getElementById('avatar-status').innerText = "READY";
         }
 
         // --- 3. EDITABLE TARIFF CALCULATOR MATRIX ---
@@ -435,114 +449,62 @@
             speakText(`Removed appliance.`);
         }
 
-        // --- 5. THREE.JS 3D AI ROBOT AVATAR (FIXED CONTAINER VISIBILITY) ---
-        let robotScene, robotCamera, robotRenderer, robotGroup, robotJaw;
-        let isRobotSpeaking = false;
+        // --- 5. THREE.JS 3D HUMAN MALE AVATAR (STYLIZED CYBER HEAD) ---
+        let avatarScene, avatarCamera, avatarRenderer, headGroup, jawMesh;
+        let isHumanSpeaking = false;
 
-        function init3DRobotAvatar() {
-            const container = document.getElementById('robot-container');
+        function init3DHumanAvatar() {
+            const container = document.getElementById('avatar-container');
             const width = container.clientWidth || 300;
             const height = container.clientHeight || 180;
 
-            robotScene = new THREE.Scene();
-            robotCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            robotCamera.position.set(0, 0, 3.5);
+            avatarScene = new THREE.Scene();
+            avatarCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            avatarCamera.position.set(0, 0, 3.5);
 
-            robotRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            robotRenderer.setSize(width, height);
-            robotRenderer.setPixelRatio(window.devicePixelRatio);
-            container.appendChild(robotRenderer.domElement);
+            avatarRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            avatarRenderer.setSize(width, height);
+            avatarRenderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(avatarRenderer.domElement);
 
-            robotScene.add(new THREE.DirectionalLight(0x00f3ff, 2.0)).position.set(2, 3, 5);
-            robotScene.add(new THREE.AmbientLight(0x8b5cf6, 1.2));
+            avatarScene.add(new THREE.DirectionalLight(0x00f3ff, 2.0)).position.set(2, 3, 5);
+            avatarScene.add(new THREE.AmbientLight(0x8b5cf6, 1.2));
 
-            robotGroup = new THREE.Group();
-            
-            const headMesh = new THREE.Mesh(
-                new THREE.BoxGeometry(1.2, 1.0, 1.0),
-                new THREE.MeshStandardMaterial({ color: 0x121026, metalness: 0.9, roughness: 0.2 })
-            );
-            robotGroup.add(headMesh);
+            headGroup = new THREE.Group();
 
+            // Cranium (Sphere scaled to head proportions)
+            const craniumGeo = new THREE.SphereGeometry(0.8, 32, 32);
+            craniumGeo.scale(1, 1.2, 1);
+            const craniumMat = new THREE.MeshStandardMaterial({ color: 0x121026, roughness: 0.3, metalness: 0.8 });
+            const headMesh = new THREE.Mesh(craniumGeo, craniumMat);
+            headGroup.add(headMesh);
+
+            // Glowing Eyes (Cyan Spheres)
             const eyeMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff });
-            const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), eyeMat); leftEye.position.set(-0.3, 0.2, 0.52);
-            const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), eyeMat); rightEye.position.set(0.3, 0.2, 0.52);
-            robotGroup.add(leftEye); robotGroup.add(rightEye);
+            const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), eyeMat); leftEye.position.set(-0.28, 0.2, 0.72);
+            const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), eyeMat); rightEye.position.set(0.28, 0.2, 0.72);
+            headGroup.add(leftEye); headGroup.add(rightEye);
 
-            robotJaw = new THREE.Mesh(
-                new THREE.BoxGeometry(0.8, 0.25, 0.9),
-                new THREE.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.8 })
-            );
-            robotJaw.position.set(0, -0.4, 0.05);
-            robotGroup.add(robotJaw);
+            // Articulating Jaw
+            const jawGeo = new THREE.BoxGeometry(0.7, 0.3, 0.6);
+            const jawMat = new THREE.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.9 });
+            jawMesh = new THREE.Mesh(jawGeo, jawMat);
+            jawMesh.position.set(0, -0.6, 0.2);
+            headGroup.add(jawMesh);
 
-            robotScene.add(robotGroup);
+            avatarScene.add(headGroup);
 
-            function animateRobot() {
-                requestAnimationFrame(animateRobot);
-                robotGroup.rotation.y += 0.006;
-                if (isRobotSpeaking) {
-                    robotJaw.position.y = -0.4 - Math.sin(Date.now() * 0.03) * 0.08;
+            function animateAvatar() {
+                requestAnimationFrame(animateAvatar);
+                headGroup.rotation.y += 0.005;
+                if (isHumanSpeaking) {
+                    jawMesh.position.y = -0.6 - Math.sin(Date.now() * 0.025) * 0.08;
                 } else {
-                    robotJaw.position.y = -0.4;
+                    jawMesh.position.y = -0.6;
                 }
-                robotRenderer.render(robotScene, robotCamera);
+                avatarRenderer.render(avatarScene, avatarCamera);
             }
-            animateRobot();
+            animateAvatar();
         }
 
-        function animateRobotSpeaking(state) { isRobotSpeaking = state; }
-
-        // --- 6. THREE.JS 3D HOLOGRAM HOUSE ---
-        let houseScene, houseCamera, houseRenderer, houseGroup;
-        const houseObjects = [];
-
-        function init3DHologramHouse() {
-            const container = document.getElementById('house-container');
-            const width = container.clientWidth || 300;
-            const height = container.clientHeight || 180;
-
-            houseScene = new THREE.Scene();
-            houseCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            houseCamera.position.set(4, 3, 5); houseCamera.lookAt(0, 0, 0);
-
-            houseRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            houseRenderer.setSize(width, height);
-            container.appendChild(houseRenderer.domElement);
-
-            houseGroup = new THREE.Group();
-            houseGroup.add(new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.8, 2.5), new THREE.MeshBasicMaterial({ color: 0x00f3ff, wireframe: true })));
-            
-            const roof = new THREE.Mesh(new THREE.ConeGeometry(2.1, 1.0, 4), new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true }));
-            roof.rotateY(Math.PI / 4); roof.position.y = 1.4;
-            houseGroup.add(roof);
-
-            houseScene.add(houseGroup);
-
-            function animateHouse() {
-                requestAnimationFrame(animateHouse);
-                houseGroup.rotation.y += 0.004;
-                houseRenderer.render(houseScene, houseCamera);
-            }
-            animateHouse();
-        }
-
-        function spawnHologramObject(name) {
-            const mesh = new THREE.Mesh(
-                new THREE.BoxGeometry(0.35, 0.35, 0.35),
-                new THREE.MeshBasicMaterial({ color: 0xff0033 })
-            );
-            const angle = houseObjects.length * (Math.PI / 3);
-            mesh.position.set(Math.cos(angle) * 0.8, -0.3, Math.sin(angle) * 0.8);
-            houseGroup.add(mesh);
-            houseObjects.push(mesh);
-        }
-
-        window.onload = () => {
-            init3DRobotAvatar();
-            init3DHologramHouse();
-            recalculateMatrix();
-        };
-    </script>
-</body>
-</html>
+        function animateHumanSpeaking
